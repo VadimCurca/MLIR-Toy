@@ -1,15 +1,20 @@
-get_property(dialect_libs GLOBAL PROPERTY MLIR_DIALECT_LIBS)
-get_property(conversion_libs GLOBAL PROPERTY MLIR_CONVERSION_LIBS)
 set(LIBS
-        ${dialect_libs}
-        ${conversion_libs}
-        MLIRArithmeticDialect
-        MLIROptLib
-        MLIRToy
-        )
-add_llvm_executable(ToyHello toyc.cpp)
+  PRIVATE
+    # MLIRAnalysis
+    # MLIRIR
+    MLIRParser
+    # MLIRPass
+    # MLIRSideEffectInterfaces
+    # MLIRTransforms
+)
+
+add_llvm_executable(ToyHello
+    toyc.cpp
+    ${PROJECT_SOURCE_DIR}/parser/AST.cpp
+)
 
 llvm_update_compile_flags(ToyHello)
+
 target_link_libraries(ToyHello PRIVATE ${LIBS})
 
 mlir_check_all_link_libraries(ToyHello)
