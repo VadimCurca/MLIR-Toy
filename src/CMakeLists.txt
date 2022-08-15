@@ -1,21 +1,30 @@
 set(LIBS
   PRIVATE
-    # MLIRAnalysis
-    # MLIRIR
+    MLIRAnalysis
+    MLIRIR
     MLIRParser
-    # MLIRPass
-    # MLIRSideEffectInterfaces
-    # MLIRTransforms
+    MLIRPass
+    MLIRSideEffectInterfaces
+    MLIRTransforms
 )
 
 add_llvm_executable(ToyHello
     toyc.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/parser/AST.cpp
+    parser/AST.cpp
+
+    mlir/MLIRGen.cpp
+    mlir/Dialect.cpp
+
+    DEPENDS
+    ToyOpsIncGen
 )
 
 llvm_update_compile_flags(ToyHello)
 
+add_subdirectory(include)
+
 target_link_libraries(ToyHello PRIVATE ${LIBS})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories(include/)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/include/)
 
 mlir_check_all_link_libraries(ToyHello)
