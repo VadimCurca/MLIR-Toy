@@ -13,7 +13,6 @@
 #ifndef TOY_OPS
 #define TOY_OPS
 
-include "mlir/IR/OpBase.td"
 include "mlir/IR/FunctionInterfaces.td"
 include "mlir/IR/SymbolInterfaces.td"
 include "mlir/Interfaces/SideEffectInterfaces.td"
@@ -90,7 +89,7 @@ def ConstantOp : Toy_Op<"constant", [NoSideEffect]> {
 // AddOp
 //===----------------------------------------------------------------------===//
 
-def AddOp : Toy_Op<"add"> {
+def AddOp : Toy_Op<"add", [NoSideEffect]> {
   let summary = "element-wise addition operation";
   let description = [{
     The "add" operation performs element-wise addition between two tensors.
@@ -113,7 +112,7 @@ def AddOp : Toy_Op<"add"> {
 // SubOp
 //===----------------------------------------------------------------------===//
 
-def SubOp : Toy_Op<"sub"> {
+def SubOp : Toy_Op<"sub", [NoSideEffect]> {
   let summary = "element-wise subtraction operation";
   let description = [{
     The "sub" operation performs element-wise subtraction between two tensors.
@@ -224,7 +223,7 @@ def GenericCallOp : Toy_Op<"generic_call"> {
 // MulOp
 //===----------------------------------------------------------------------===//
 
-def MulOp : Toy_Op<"mul"> {
+def MulOp : Toy_Op<"mul", [NoSideEffect]> {
   let summary = "element-wise multiplication operation";
   let description = [{
     The "mul" operation performs element-wise multiplication between two
@@ -326,7 +325,7 @@ def ReturnOp : Toy_Op<"return", [NoSideEffect, HasParent<"FuncOp">,
     bool hasOperand() { return getNumOperands() != 0; }
   }];
 
-  // Invoke a static verify method to verify this return operation.
+  // Indicate that additional verification for this operation is necessary.
   let hasVerifier = 1;
 }
 
