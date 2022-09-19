@@ -1,3 +1,6 @@
+add_subdirectory(include)
+include_directories(include)
+
 set(LIBS
   PRIVATE
     MLIRAnalysis
@@ -7,6 +10,10 @@ set(LIBS
     MLIRSideEffectInterfaces
     MLIRTransforms
 )
+
+set(LLVM_TARGET_DEFINITIONS mlir/ToyCombine.td)
+mlir_tablegen(ToyCombine.inc -gen-rewriters)
+add_public_tablegen_target(ToyCombineIncGen)
 
 add_llvm_executable(ToyHello
     toyc.cpp
@@ -18,14 +25,13 @@ add_llvm_executable(ToyHello
 
     DEPENDS
     ToyOpsIncGen
+    ToyCombineIncGen
 )
 
 llvm_update_compile_flags(ToyHello)
 
-add_subdirectory(include)
-
 target_link_libraries(ToyHello PRIVATE ${LIBS})
-include_directories(include/)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include/)
 
 mlir_check_all_link_libraries(ToyHello)
