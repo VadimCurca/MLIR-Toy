@@ -331,7 +331,7 @@ def ReturnOp : Toy_Op<"return", [NoSideEffect, HasParent<"FuncOp">,
 // TransposeOp
 //===----------------------------------------------------------------------===//
 
-def TransposeOp : Toy_Op<"transpose"> {
+def TransposeOp : Toy_Op<"transpose", [NoSideEffect]> {
   let summary = "transpose operation";
 
   let arguments = (ins F64Tensor:$input);
@@ -341,12 +341,15 @@ def TransposeOp : Toy_Op<"transpose"> {
     `(` $input `:` type($input) `)` attr-dict `to` type(results)
   }];
 
+  // Enable registering canonicalization patterns with this operation.
+  let hasCanonicalizer = 1;
+
   // Allow building a TransposeOp with from the input operand.
   let builders = [
     OpBuilder<(ins "Value":$input)>
   ];
 
-  // Invoke a static verify method to verify this transpose operation.
+  // Indicate that additional verification for this operation is necessary.
   let hasVerifier = 1;
 }
 

@@ -14,6 +14,7 @@ add_llvm_executable(ToyHello
 
     mlir/MLIRGen.cpp
     mlir/Dialect.cpp
+    mlir/ToyCombine.cpp
 
     DEPENDS
     ToyOpsIncGen
