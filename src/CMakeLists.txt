@@ -1,8 +1,11 @@
 include_directories(include)
 add_subdirectory(include)
 
+get_property(dialect_libs GLOBAL PROPERTY MLIR_DIALECT_LIBS)
+
 set(LIBS
   PRIVATE
+    ${dialect_libs}
     MLIRAnalysis
     MLIRCastInterfaces
     MLIRCallInterfaces
@@ -25,6 +28,7 @@ add_llvm_executable(ToyHello
     mlir/Dialect.cpp
     mlir/ToyCombine.cpp
     mlir/ShapeInferencePass.cpp
+    mlir/LowerToAffineLoops.cpp
 
     DEPENDS
     ToyOpsIncGen
