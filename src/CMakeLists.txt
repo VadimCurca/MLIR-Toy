@@ -2,10 +2,12 @@ include_directories(include)
 add_subdirectory(include)
 
 get_property(dialect_libs GLOBAL PROPERTY MLIR_DIALECT_LIBS)
+get_property(conversion_libs GLOBAL PROPERTY MLIR_CONVERSION_LIBS)
 
 set(LIBS
   PRIVATE
     ${dialect_libs}
+    ${conversion_libs}
     MLIRAnalysis
     MLIRCastInterfaces
     MLIRCallInterfaces
@@ -14,6 +16,11 @@ set(LIBS
     MLIRPass
     MLIRSideEffectInterfaces
     MLIRTransforms
+    MLIRLLVMCommonConversion
+    MLIRLLVMDialect
+    MLIRLLVMToLLVMIRTranslation
+    MLIRMemRefDialect
+    MLIRTargetLLVMIRExport
 )
 
 set(LLVM_TARGET_DEFINITIONS mlir/ToyCombine.td)
@@ -29,6 +36,7 @@ add_llvm_executable(ToyHello
     mlir/ToyCombine.cpp
     mlir/ShapeInferencePass.cpp
     mlir/LowerToAffineLoops.cpp
+    mlir/LowerToLLVM.cpp
 
     DEPENDS
     ToyOpsIncGen
