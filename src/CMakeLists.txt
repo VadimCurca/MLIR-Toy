@@ -1,9 +1,11 @@
-add_subdirectory(include)
 include_directories(include)
+add_subdirectory(include)
 
 set(LIBS
   PRIVATE
     MLIRAnalysis
+    MLIRCastInterfaces
+    MLIRCallInterfaces
     MLIRIR
     MLIRParser
     MLIRPass
@@ -22,10 +24,12 @@ add_llvm_executable(ToyHello
     mlir/MLIRGen.cpp
     mlir/Dialect.cpp
     mlir/ToyCombine.cpp
+    mlir/ShapeInferencePass.cpp
 
     DEPENDS
     ToyOpsIncGen
     ToyCombineIncGen
+    ToyShapeInferenceInterfaceIncGen
 )
 
 llvm_update_compile_flags(ToyHello)
